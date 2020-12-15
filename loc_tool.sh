@@ -3,8 +3,33 @@
 # Don't use space in file names as delimeter
 IFS=$'\n'
 
-input_root_game_folder="E:\Steam\steamapps\common\Sid Meier's Civilization VI"
-input_bbg_root_folder="C:\Users\vango\Documents\My Games\Sid Meier's Civilization VI\Mods\BBGLocal"
+# input_root_game_folder="E:\Steam\steamapps\common\Sid Meier's Civilization VI"
+# input_bbg_root_folder="C:\Users\vango\Documents\My Games\Sid Meier's Civilization VI\Mods\BBGLocal"
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+    do
+    key="$1"
+
+    case $key in
+        --root|-root)
+        input_root_game_folder="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --bbg|-bbg)
+        input_bbg_root_folder="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        *)    # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+    esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+echo "${input_root_game_folder}"
+echo "${input_bbg_root_folder}"
 
 # Settings
 cache_dir="./cache"
@@ -110,6 +135,11 @@ do
     fi
 done  
 
+
+##############################################################################
+### Test #2: Check the master (english) bbg translations against other languages
+##############################################################################
+
 # Get english BBG translations
 bbg_translation_file_master=`find "$bbg_translation_folder" | grep -i english`
 echo "BBG Translation Master file: '${bbg_translation_file_master}'"
@@ -127,10 +157,10 @@ do
     # Clear missing translations for this locale
     missing_translations=()
 
-    # Check if all source_locs are in the file
+    # Check if english is missing a locale counterpart
     for loc in "${master_translations[@]}"
     do
-        # Check if this loc is in matches
+        # Missing counterpart in this language
         if [[ ! " ${localization_translations[@]} " =~ " ${loc} " ]]; then
             missing_translations+=($loc);
         fi
