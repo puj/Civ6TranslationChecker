@@ -41,7 +41,7 @@ mkdir -p "$cache_dir"
 game_root_folder="${input_root_game_folder//\\//}"
 
 # Base translation files
-game_base_text_folder="$game_root_folder/Base/Assets/Text/en_US"
+game_base_text_folder="$game_root_folder/Base/Assets/Text/"
 game_base_translation_files=(`find $game_base_text_folder -name "*.xml"`)
 
 # DLC translation files
@@ -59,7 +59,7 @@ bbg_root_folder="${input_bbg_root_folder//\\//}"
 # Our completed translations
 #  This is what we check to see if anything is missing
 bbg_translation_folder="${bbg_root_folder}/lang"
-bbg_translation_files=(`find "$bbg_translation_folder"`)
+bbg_translation_files=(`find "$bbg_translation_folder" -name "*.xml" `)
 
 # Find our usages, ignore the translation files and hidden folders
 bbg_source_files=(`find "$bbg_root_folder" -name "*.xml" -o -name "*.sql" -o -name "*.lua" | grep -v "$bbg_translation_folder" | grep -v "$bbg_root_folder/\." `)
